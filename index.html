@@ -4,100 +4,93 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fuat Arslan</title>
-  <meta name="description" content="Academic profile of Your Name: research, publications, education, CV, and links." />
+  <meta name="description" content="Academic profile of Fuat Arslan: research, publications, education, awards, CV, and links." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0f172a;       /* slate-900 */
-      --panel: #111827;    /* gray-900 */
-      --ink: #e5e7eb;      /* gray-200 */
-      --muted: #9ca3af;    /* gray-400 */
-      --accent: #60a5fa;   /* blue-400 */
-      --chip: #1f2937;     /* gray-800 */
-      --card: #0b1220;     /* deep */
+    :root{
+      --bg:#0f172a;--panel:#111827;--ink:#e5e7eb;--muted:#9ca3af;--accent:#60a5fa;--chip:#1f2937;--card:#0b1220;--ok:#22c55e
     }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--ink); background: radial-gradient(1200px 600px at 10% -10%, #3b82f620, transparent),
-               radial-gradient(900px 500px at 100% 10%, #9333ea14, transparent), var(--bg);
-      line-height: 1.6; 
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 32px 20px 96px; }
-
-    /* Header / Hero */
-    .hero { display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: center; margin-top: 24px; }
-    .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #ffffff22; box-shadow: 0 10px 30px #0008; }
-    h1 { font-size: clamp(28px, 3.2vw, 44px); margin: 0; line-height: 1.15; }
-    .subtitle { color: var(--muted); margin-top: 6px; }
-    .badges { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; background: linear-gradient(180deg, #1f2937, #111827); color: #eef2ff; border: 1px solid #ffffff1a; box-shadow: 0 6px 16px #0006; font-weight: 600; }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 18px #0008; }
-
-    /* Icon row */
-    .icons { display: flex; gap: 14px; margin-top: 10px; }
-    .icons a { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--chip); border: 1px solid #ffffff12; }
-    .icons a:hover { background: #243244; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-
-    /* Section */
-    section { margin-top: 40px; background: linear-gradient(180deg, #0c1221, #0a1120); border: 1px solid #ffffff0f; border-radius: 18px; padding: 22px 22px; box-shadow: 0 10px 30px #0008; }
-    section h2 { margin: 0 0 12px; font-size: 22px; letter-spacing: .3px; }
-
-    /* About */
-    .about p { margin: 0; }
-
-    /* Education */
-    .edu-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: center; padding: 14px 0; border-top: 1px dashed #ffffff18; }
-    .edu-item:first-child { border-top: none; }
-    .logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border:1px solid #ffffff1a; }
-    .edu-meta { color: var(--muted); font-size: 14px; margin-top: 2px; }
-
-    /* Publications */
-    .pub { border-top: 1px dashed #ffffff15; padding: 14px 0; display: grid; grid-template-columns: 80px 1fr; gap: 12px; }
-    .pub:first-child { border-top: none; }
-    .thumb { width: 80px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #ffffff12; background: #111827; }
-    .pub-title { margin: 0; font-weight: 700; }
-    .pub-venue { color: var(--muted); font-size: 14px; }
-    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-    .chip { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #101826; border: 1px solid #ffffff12; color: #c7d2fe; }
-
-    /* Footer */
-    footer { color: var(--muted); text-align: center; margin-top: 32px; }
-
-    /* Responsive */
-    @media (max-width: 640px) {
-      .hero { grid-template-columns: 1fr; text-align: center; }
-      .avatar { margin: 0 auto; }
-      .icons { justify-content: center; }
-      .pub { grid-template-columns: 1fr; }
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,"Apple Color Emoji","Segoe UI Emoji";color:var(--ink);
+      background:radial-gradient(1200px 600px at 10% -10%, #3b82f620, transparent),radial-gradient(900px 500px at 100% 10%, #9333ea14, transparent),var(--bg);
+      line-height:1.6}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1060px;margin:0 auto;padding:32px 20px 96px}
+    .hero{display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:center;margin-top:24px}
+    .avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #ffffff22;box-shadow:0 10px 30px #0008}
+    h1{font-size:clamp(28px,3.2vw,44px);margin:0;line-height:1.15}
+    .subtitle{color:var(--muted);margin-top:6px}
+    .badges{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:linear-gradient(180deg,#1f2937,#111827);color:#eef2ff;border:1px solid #ffffff1a;box-shadow:0 6px 16px #0006;font-weight:600}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px #0008}
+    .icons{display:flex;gap:14px;margin-top:10px}
+    .icons a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--chip);border:1px solid #ffffff12}
+    .icons a:hover{background:#243244}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+    section{margin-top:40px;background:linear-gradient(180deg,#0c1221,#0a1120);border:1px solid #ffffff0f;border-radius:18px;padding:22px 22px;box-shadow:0 10px 30px #0008}
+    section h2{margin:0 0 12px;font-size:22px;letter-spacing:.3px}
+    .about p{margin:0}
+    .k{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-top:1px dashed #ffffff18}
+    .k:first-child{border-top:none}
+    .logo{width:56px;height:56px;border-radius:50%;object-fit:cover;border:1px solid #ffffff1a}
+    .edu-meta{color:var(--muted);font-size:14px;margin-top:2px}
+    .pub{border-top:1px dashed #ffffff15;padding:14px 0;display:grid;grid-template-columns:80px 1fr;gap:12px}
+    .pub:first-child{border-top:none}
+    .thumb{width:80px;height:60px;border-radius:8px;object-fit:cover;border:1px solid #ffffff12;background:#111827}
+    .pub-title{margin:0;font-weight:700}
+    .pub-venue{color:var(--muted);font-size:14px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .chip{font-size:12px;padding:4px 10px;border-radius:999px;background:#101826;border:1px solid #ffffff12;color:#c7d2fe}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .item{background:var(--card);border:1px solid #ffffff0f;border-radius:14px;padding:12px}
+    .item h3{margin:0 0 6px;font-size:16px}
+    .meta{color:var(--muted);font-size:13px}
+    footer{color:var(--muted);text-align:center;margin-top:32px}
+    @media(max-width:800px){.grid-2{grid-template-columns:1fr}}
+    @media(max-width:640px){.hero{grid-template-columns:1fr;text-align:center}.avatar{margin:0 auto}.icons{justify-content:center}.pub{grid-template-columns:1fr}}
   </style>
+  <!-- JSON-LD for richer snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Fuat Arslan",
+    "affiliation": {"@type": "CollegeOrUniversity", "name": "Bilkent University"},
+    "email": "mailto:arsln.fuat@gmail.com",
+    "url": "https://example.com/",
+    "sameAs": [
+      "https://www.linkedin.com/in/fuat-arslan-5899611a2/",
+      "https://github.com/fuat-arslan",
+      "https://scholar.google.com/citations?user=49AmWIIAAAAJ&hl=en"
+    ]
+  }
+  </script>
 </head>
 <body>
   <div class="container">
-    <!-- HERO / HEADER -->
+    <!-- HERO -->
     <header class="hero">
-      <img class="avatar" src="assets/profile.png" alt="Your portrait" />
+      <img class="avatar" src="assets/profile.png" alt="Portrait of Fuat Arslan" />
       <div>
         <h1>Fuat Arslan</h1>
-        <div class="subtitle">M.Sc. student at <strong>Bilkent University</strong><br />
-          <a href="arsln.fuat@gmail.com">mail</a>
+        <div class="subtitle">
+          M.Sc. student, <strong>Bilkent University</strong><br/>
+          <a href="mailto:arsln.fuat@gmail.com">arsln.fuat@gmail.com</a> • <a href="tel:+905443920259">+90 544-392-0259</a>
         </div>
         <div class="badges">
-          <a class="btn" href="assets/CV.pdf" target="_blank" rel="noopener">⬇️ Download CV</a>
+          <a class="btn" href="assets/CV_Fuat_Arslan_2025.pdf" target="_blank" rel="noopener">⬇️ Download CV</a>
           <a class="btn" href="#publications">📚 Selected Publications</a>
+          <a class="btn" href="#awards">🏅 Awards</a>
         </div>
         <nav class="icons" aria-label="Social links">
           <a href="https://github.com/fuat-arslan" target="_blank" rel="noopener" title="GitHub">🐙<span class="sr-only">GitHub</span></a>
-          <a href="https://www.linkedin.com/in/arslanfuat" target="_blank" rel="noopener" title="LinkedIn">in<span class="sr-only">LinkedIn</span></a>
-          <a href="https://scholar.google.com.tr/citations?user=49AmWIIAAAAJ&hl=en" target="_blank" rel="noopener" title="Google Scholar">G<span class="sr-only">Scholar</span></a>
-          <a href="mailto:you@example.com" title="Email">✉️<span class="sr-only">Email</span></a>
+          <a href="https://www.linkedin.com/in/fuat-arslan-5899611a2/" target="_blank" rel="noopener" title="LinkedIn">in<span class="sr-only">LinkedIn</span></a>
+          <a href="https://scholar.google.com/citations?user=49AmWIIAAAAJ&hl=en" target="_blank" rel="noopener" title="Google Scholar">G<span class="sr-only">Scholar</span></a>
+          <a href="mailto:arsln.fuat@gmail.com" title="Email">✉️<span class="sr-only">Email</span></a>
         </nav>
       </div>
     </header>
@@ -106,81 +99,251 @@
     <section class="about" id="about">
       <h2>About Me</h2>
       <p>
-        I am a M.Sc. student in Electrical &amp; Electronics Engineering at <em>Bilkent University</em>, advised by <a href="#">Prof. Tolga Cukur</a>. 
-        I'm passionate about pushing the boundaries of <strong>Medical Image sytnhesis</strong> by developing cutting‑edge <strong>generative models</strong> for <strong>medical imaging</strong>.
-        My work focuses on reliable image reconstruction, diffusion/score models, inverse problems, and uncertainty quantification.
+        I am an M.Sc. student in Electrical &amp; Electronics Engineering at <em>Bilkent University</em>, advised by Prof. Tolga Çukur. I'm passionate about pushing the boundaries of <strong>medical image synthesis</strong> and <strong>reconstruction</strong> by developing cutting‑edge <strong>generative models</strong> (diffusion, state‑space, autoregressive) for MRI and related modalities. My interests include inverse problems, reliability &amp; uncertainty quantification, and clinically useful AI systems.
       </p>
     </section>
 
     <!-- EDUCATION -->
     <section id="education">
       <h2>Education</h2>
-      <div class="edu-item">
-        <img class="logo" src="assets/university_logo.png" alt="University logo" />
+      <div class="k">
+        <img class="logo" src="assets/university_logo.png" alt="Bilkent University logo" />
         <div>
           <div><strong>M.Sc., Electrical &amp; Electronics Engineering</strong> — Bilkent University, Ankara, Turkey</div>
-          <div class="edu-meta">Advisor: Prof. Tolga Cukur • CGPA: 4.00/4.00</div>
+          <div class="edu-meta">Advisor: Prof. Tolga Çukur • CGPA: 4.00/4.00</div>
         </div>
         <div class="edu-meta">2023 — 2026</div>
       </div>
-      <div class="edu-item">
-        <img class="logo" src="assets/university_logo.png" alt="University logo" />
+      <div class="k">
+        <img class="logo" src="assets/university_logo.png" alt="Bilkent University logo" />
         <div>
           <div><strong>B.Sc., Electrical &amp; Electronics Engineering</strong> — Bilkent University, Ankara, Turkey</div>
           <div class="edu-meta">CGPA: 3.88/4.00</div>
         </div>
         <div class="edu-meta">2018 — 2023</div>
       </div>
+      <div class="k">
+        <img class="logo" src="assets/university_logo.png" alt="Bilkent University logo" />
+        <div>
+          <div><strong>Second Major in Physics</strong> — Bilkent University (terminated by own decision)</div>
+          <div class="edu-meta">CGPA: 3.82/4.00</div>
+        </div>
+        <div class="edu-meta">2020 — 2023</div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <h2>Experience</h2>
+      <div class="grid-2">
+        <div class="item">
+          <h3>Researcher — Hacettepe University Faculty of Medicine</h3>
+          <div class="meta">Aug 2022 – Jun 2024 • Ankara, Turkey</div>
+          <ul>
+            <li>Developed deep learning models for melanoma classification.</li>
+            <li>Created a research‑grade dermoscopic image dataset.</li>
+            <li>Built a web app for AI‑assisted melanoma risk assessment used in pilot evaluations.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Undergraduate Researcher — Bilkent University</h3>
+          <div class="meta">May 2022 – Sep 2022 • Ankara, Turkey</div>
+          <ul>
+            <li>Implemented an internet‑augmented, voice‑enabled chatbot with PyTorch/ParlAI/Transformers (supervised by Prof. Arnab Basu).</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Intern — HAVELSAN</h3>
+          <div class="meta">Aug 2022 – Sep 2022 • Ankara, Turkey</div>
+          <ul>
+            <li>Built an AI‑based real‑time network intrusion detection system in PyTorch.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Candidate Engineer — ULAK Haberleşme</h3>
+          <div class="meta">Aug 2021 – Mar 2022 • Ankara/Istanbul, Turkey</div>
+          <ul>
+            <li>Contributed to 5G‑NR R&amp;D, designed PL with Verilog, developed PS AMP software with OpenAMP.</li>
+            <li>Worked across FreeRTOS, bare‑metal, and embedded Linux for AMP designs.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Intern — ULAK Haberleşme</h3>
+          <div class="meta">Jun 2021 – Aug 2021 • Ankara, Turkey</div>
+          <ul>
+            <li>Booted ZCU102 with PetaLinux; designed AXI4/GPIO IP (VHDL); wrote control software with Libmetal in C/C++ (Vitis).</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Undergraduate Researcher — Bilkent University</h3>
+          <div class="meta">Feb 2021 – Jun 2021 • Ankara, Turkey</div>
+          <ul>
+            <li>Developed a coil voltage control system on a Xilinx VC707 board using VHDL and MATLAB.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS / TEACHING split -->
+    <section id="projects-teaching">
+      <h2>Projects &amp; Teaching</h2>
+      <div class="grid-2">
+        <div class="item">
+          <h3>Selected Projects</h3>
+          <ul>
+            <li><strong>Mathematical Analysis of NN Optimization</strong> (Nov–Dec 2024): Derived and analyzed GD/SGD/Newton/Adaptive rules.
+            </li>
+            <li><strong>AI in Medicine</strong> (Nov 2022–May 2023): Ranked 5th nationwide in Teknofest 2023 AI in Healthcare; breast cancer detection in mammography.</li>
+            <li><strong>Visual Odometry Navigation</strong> (Nov 2022–Jun 2023): Robot navigation fusing VO, IMU, and GNSS (senior project with ROKETSAN).</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Teaching</h3>
+          <div class="meta">Head Teaching Assistant — EEE 202 Circuit Theory (Aug 2023 – Jun 2026)</div>
+          <ul>
+            <li>Led labs, graded coursework, supervised projects, coordinated 14–16 TAs/semester.</li>
+            <li>Prepared and updated lab materials; managed course administration.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="awards">
+      <h2>Awards &amp; Achievements</h2>
+      <ul>
+        <li><strong>ISMRM Magna Cum Laude Merit Award</strong> (2025) — Spotlight abstract, ISMRM Annual Meeting, Honolulu, USA.</li>
+        <li><strong>Best Paper Award</strong> — Bilkent Graduate Research Conference (2025).</li>
+        <li>5th nationwide — Teknofest 2023 AI in Healthcare (Engineer Docs).</li>
+        <li>Ranked 633rd among ~2M in Turkey National University Entrance Exam (2018).</li>
+        <li>Ranked 9/231 in EEE (B.Sc.) and 5/46 in Physics (second major) at Bilkent.</li>
+      </ul>
     </section>
 
     <!-- PUBLICATIONS -->
     <section id="publications">
       <h2>Publications (Selected)</h2>
 
+      <h3 style="margin:8px 0 6px">Journal Articles</h3>
       <article class="pub">
-        <img class="thumb" src="assets/paper1.png" alt="Paper 1 thumbnail" />
+        <img class="thumb" src="assets/paper_scdb.png" alt="Self-Consistent Recursive Diffusion Bridge thumbnail" />
         <div>
-          <p class="pub-title">Alignment‑Guided Forward‑Distortion Model for Deep Unsupervised Correction of Susceptibility Artifacts in EPI</p>
-          <div class="pub-venue">Author One, <strong>Your Name</strong>, Author Three — EMBC 2025 (oral)</div>
+          <p class="pub-title">Self-Consistent Recursive Diffusion Bridge for Medical Image Translation</p>
+          <div class="pub-venue">F. Arslan, B. Kabas, O. Dalmaz, M. Ozbey, and T. Çukur — <em>Medical Image Analysis (MEDIA)</em>, 2025, in press.</div>
           <div class="chips">
-            <span class="chip">paper</span>
-            <span class="chip">code</span>
-            <span class="chip">poster</span>
+            <a class="chip" href="#" aria-disabled="true" title="In press">in‑press</a>
           </div>
         </div>
       </article>
 
       <article class="pub">
-        <img class="thumb" src="assets/paper2.png" alt="Paper 2 thumbnail" />
+        <img class="thumb" src="assets/paper_gatr.png" alt="GATR thumbnail" />
         <div>
-          <p class="pub-title">Susceptibility Artifact Correction in Four‑Way Phase‑Encoded Echo Planar Imaging with Unsupervised Deep Learning</p>
-          <div class="pub-venue"><strong>Your Name</strong>, et al. — SIU 2025 (oral)</div>
+          <p class="pub-title">Generative Autoregressive Transformers for Model‑Agnostic Federated MRI Reconstruction</p>
+          <div class="pub-venue">V. A. Nezhad, G. Elmas, B. Kabas, <strong>F. Arslan</strong>, and T. Çukur — arXiv:2502.04521, 2025.</div>
           <div class="chips">
-            <span class="chip">paper</span>
-            <span class="chip">code</span>
-            <span class="chip">slides</span>
+            <a class="chip" href="https://arxiv.org/abs/2502.04521" target="_blank" rel="noopener">arXiv</a>
           </div>
         </div>
       </article>
 
       <article class="pub">
-        <img class="thumb" src="assets/paper3.png" alt="Paper 3 thumbnail" />
+        <img class="thumb" src="assets/paper_s4mri.png" alt="Physics-Driven Autoregressive SSM thumbnail" />
         <div>
-          <p class="pub-title">Fourier Neural Operator for Coupled Fokker–Planck Equation</p>
-          <div class="pub-venue"><strong>Your Name</strong>, et al. — Workshop on Magnetic Particle Imaging 2024</div>
+          <p class="pub-title">Physics‑Driven Autoregressive State Space Models for Medical Image Reconstruction</p>
+          <div class="pub-venue"><strong>F. Arslan</strong>, B. Kabas, V. A. Nezhad, S. Ozturk, E. U. Saritas, and T. Çukur — arXiv:2412.09331, 2025.</div>
           <div class="chips">
-            <span class="chip">arXiv</span>
-            <span class="chip">code</span>
+            <a class="chip" href="https://arxiv.org/abs/2412.09331" target="_blank" rel="noopener">arXiv</a>
           </div>
         </div>
       </article>
 
-      <p class="edu-meta">Full list on <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>.</p>
+      <article class="pub">
+        <img class="thumb" src="assets/paper_i2i_mamba.png" alt="I2I-Mamba thumbnail" />
+        <div>
+          <p class="pub-title">I2I‑Mamba: Multi‑modal Medical Image Synthesis via Selective State Space Modeling</p>
+          <div class="pub-venue">O. F. Atli, B. Kabas, <strong>F. Arslan</strong>, M. Yurt, O. Dalmaz, and T. Çukur — arXiv:2405.14022, 2024.</div>
+          <div class="chips">
+            <a class="chip" href="https://arxiv.org/abs/2405.14022" target="_blank" rel="noopener">arXiv</a>
+          </div>
+        </div>
+      </article>
+
+      <h3 style="margin:16px 0 6px">Conference Papers</h3>
+      <article class="pub">
+        <img class="thumb" src="assets/paper_isMRM.png" alt="ISMRM 2025 thumbnail" />
+        <div>
+          <p class="pub-title">A Self‑Consistent Diffusion Schrödinger Bridge for Multi‑Modal Medical Image Translation</p>
+          <div class="pub-venue"><strong>F. Arslan</strong>, B. Kabas, O. Dalmaz, M. Ozbey, and T. Çukur — ISMRM, 2025.</div>
+        </div>
+      </article>
+      <article class="pub">
+        <img class="thumb" src="assets/paper_siu.png" alt="SIU 2024 thumbnail" />
+        <div>
+          <p class="pub-title">Robust Brain Tumor Segmentation with Deep Residual Supervision and Mixed Precision Training</p>
+          <div class="pub-venue"><strong>F. Arslan</strong>, M. B. Yılmaz, and T. Çukur — SIU, May 2024.</div>
+        </div>
+      </article>
+      <article class="pub">
+        <img class="thumb" src="assets/paper_siu.png" alt="SIU 2024 thumbnail" />
+        <div>
+          <p class="pub-title">Super Resolution MRI via Upscaling Diffusion Bridges</p>
+          <div class="pub-venue">M. U. Mirza, <strong>F. Arslan</strong>, and T. Çukur — SIU, May 2024.</div>
+        </div>
+      </article>
+      <article class="pub">
+        <img class="thumb" src="assets/paper_siu.png" alt="SIU 2024 thumbnail" />
+        <div>
+          <p class="pub-title">Multi‑Contrast MR Image Synthesis with a Brownian Diffusion Model</p>
+          <div class="pub-venue">B. Kabas, <strong>F. Arslan</strong>, and T. Çukur — SIU, May 2024.</div>
+        </div>
+      </article>
+      <article class="pub">
+        <img class="thumb" src="assets/paper_siu.png" alt="SIU 2024 thumbnail" />
+        <div>
+          <p class="pub-title">Generalizable Deep MRI Reconstruction with Cross‑Site Data Synthesis</p>
+          <div class="pub-venue">V. A. Nezhad, G. Elmas, <strong>F. Arslan</strong>, B. Kabas, and T. Çukur — SIU, May 2024.</div>
+        </div>
+      </article>
+
+      <p class="edu-meta">Full list on <a href="https://scholar.google.com/citations?user=49AmWIIAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>.</p>
+    </section>
+
+    <!-- TALKS -->
+    <section id="talks">
+      <h2>Invited Talks &amp; Presentations</h2>
+      <ul>
+        <li>“Öğrenme Biçimleri: Klasikten Derine” — DUSEK session on AI in Dermatology (2025).</li>
+      </ul>
+    </section>
+
+    <!-- SKILLS / CERTS / ORGS -->
+    <section id="skills">
+      <h2>Skills &amp; Activities</h2>
+      <div class="grid-2">
+        <div class="item">
+          <h3>Technical Skills</h3>
+          <ul>
+            <li><strong>Programming:</strong> Python, MATLAB, VHDL, Verilog</li>
+            <li><strong>ML/AI:</strong> PyTorch, HuggingFace Transformers, MONAI</li>
+            <li><strong>Embedded/Tools:</strong> Vivado, Simulink, Vitis, PetaLinux, FreeRTOS, OpenAMP, Libmetal</li>
+            <li><strong>Languages:</strong> English (Proficient), Turkish (Native), German (Elementary)</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Leadership &amp; Certificates</h3>
+          <ul>
+            <li>President, Bilkent Programming Club (Jan 2022 – Jul 2023); taught ML &amp; VHDL tutorials.</li>
+            <li>Official Kickboxing License — Türkiye Kick Boks Federasyonu (2019–Present).</li>
+            <li>Official Wushu &amp; Kung‑Fu License — Türkiye Wushu Kung‑Fu Federasyonu (2019–Present).</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- FOOTER -->
     <footer>
-      © <span id="y"></span> Your Name — Last updated <span id="updated"></span>
+      © <span id="y"></span> Fuat Arslan — Last updated <span id="updated"></span>
     </footer>
   </div>
 
