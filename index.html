@@ -79,6 +79,18 @@
     .pub-entry { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
     .pub-entry img { width: 100px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
     .pub-text { flex: 1; }
+    .pub-text a {
+      color: inherit;              /* keeps your normal text color */
+      text-decoration: none;       /* removes underline */
+      font-weight: inherit;        /* keeps consistent weight */
+      transition: color 0.2s ease; /* smooth hover effect */
+    }
+    
+    .pub-text a:hover {
+      color: #444;                 /* subtle darker hover (adjust if needed) */
+      text-decoration: underline;  /* optional: underline only on hover */
+    }
+
 
     footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 48px; padding: 16px 0; }
       /* Actions row under icons */
