@@ -42,6 +42,16 @@
   }
   .line.is-visible { opacity: .92; }
   .line.spacer { height: 18px; margin: 0; }
+  .line.emphasis {
+    font-size: clamp(21px, 3.1vw, 30px);
+    line-height: 1.6;
+    font-style: italic;
+    letter-spacing: .3px;
+    color: #f4f1ea;
+    margin: 26px 0;
+    text-shadow: 0 0 24px rgba(244,241,234,.16);
+  }
+  .line.emphasis.is-visible { opacity: 1; }
   #faLine {
     margin-top: 14px;
     font-style: italic;
@@ -62,6 +72,20 @@
     z-index: 2;
   }
   .close-hint.is-visible { opacity: .55; }
+  .early-msg {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(15px, 2vw, 18px);
+    font-style: italic;
+    line-height: 1.9;
+    color: var(--a-muted);
+    opacity: 0;
+    transition: opacity 1.6s ease;
+    text-align: center;
+    width: min(520px, 86vw);
+    margin: 0;
+  }
+  .early-msg.is-visible { opacity: .85; }
   canvas {
     position: fixed;
     inset: 0;
@@ -94,9 +118,7 @@
     "That is the only kind of infinite available to us.",
     "Not to be remembered. To be built upon.",
     "",
-    "Still, if you are reading this, some part of it survived.",
-    "",
-    "For those who come after."
+    { text: "For those who come after.", emphasis: true }
   ];
 
   const stage = document.getElementById("stage");
@@ -111,14 +133,21 @@
 
   // Build the paragraph elements (hidden at first, faded in one at a time)
   const lineEls = [];
-  paragraphs.forEach(text => {
+  paragraphs.forEach(item => {
+    const isSpacer = item === "";
+    const isEmphasis = typeof item === "object" && item.emphasis;
+    const text = isEmphasis ? item.text : item;
     const p = document.createElement("p");
-    if (text === "") {
+    if (isSpacer) {
       p.className = "line spacer";
+    } else if (isEmphasis) {
+      p.className = "line diss-line emphasis";
+      p.textContent = text;
     } else {
       p.className = "line diss-line";
       p.textContent = text;
     }
+    p.dataset.emphasis = isEmphasis ? "1" : "0";
     stage.appendChild(p);
     lineEls.push(p);
   });
@@ -134,20 +163,31 @@
   let revealTimer = 400;
   lineEls.forEach(el => {
     const isSpacer = el.classList.contains("spacer");
-    revealTimer += isSpacer ? 500 : 1550;
-    if (!isSpacer) {
+    const isEmphasis = el.dataset.emphasis === "1";
+    if (isSpacer) {
+      revealTimer += 500;
+    } else if (isEmphasis) {
+      revealTimer += 1400; // extra pause before it arrives
+      setTimeout(() => el.classList.add("is-visible"), revealTimer);
+      revealTimer += 2600; // extra pause after, let it sit before continuing
+    } else {
+      revealTimer += 1550;
       setTimeout(() => el.classList.add("is-visible"), revealTimer);
     }
   });
   revealTimer += 900;
   setTimeout(() => faLine.classList.add("is-visible"), revealTimer);
   revealTimer += 1800;
-  setTimeout(() => closeHint.classList.add("is-visible"), revealTimer);
+  setTimeout(() => {
+    closeHint.classList.add("is-visible");
+    revealComplete = true;
+  }, revealTimer);
 
   // ============ DISSOLVE (same technique as tested separately) ============
   let particles = [];
   let rafId = null;
   let isClosing = false;
+  let revealComplete = false;
 
   function samplePointsFromElement(el) {
     const rect = el.getBoundingClientRect();
@@ -232,6 +272,11 @@
     isClosing = true;
     closeHint.classList.remove("is-visible");
 
+    if (!revealComplete) {
+      beginEarlyClosing();
+      return;
+    }
+
     lineEls.forEach(el => { if (!el.classList.contains("spacer")) dissolveElement(el, { speed: 1.6, holdFrames: 0 }); });
 
     setTimeout(() => {
@@ -243,6 +288,39 @@
         }
       }, 100);
     }, 2400);
+  }
+
+  // Left before it finished. Dissolve whatever was showing, then offer one
+  // small closing thought of its own -- fitting, given what the piece is about --
+  // and let that fade the same way everything else does.
+  function beginEarlyClosing() {
+    [...lineEls, faLine].forEach(el => dissolveElement(el, { speed: 1.8, holdFrames: 0 }));
+
+    const waitForFirstClear = setInterval(() => {
+      if (particles.length === 0 && !rafId) {
+        clearInterval(waitForFirstClear);
+        showEarlyMessage();
+      }
+    }, 100);
+  }
+
+  function showEarlyMessage() {
+    const msg = document.createElement("p");
+    msg.className = "early-msg";
+    msg.id = "earlyMsg";
+    msg.textContent = "That's alright. Most things end before they're finished too.";
+    stage.appendChild(msg);
+    requestAnimationFrame(() => requestAnimationFrame(() => msg.classList.add("is-visible")));
+
+    setTimeout(() => {
+      dissolveElement(msg, { speed: 0.7, holdFrames: 0 });
+      const waitForClear = setInterval(() => {
+        if (particles.length === 0 && !rafId) {
+          clearInterval(waitForClear);
+          finalizeClose();
+        }
+      }, 100);
+    }, 2600);
   }
 
   function finalizeClose() {
