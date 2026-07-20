@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Arcade Easter Egg — Test v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --arcade-bg: #05070a;
+    --arcade-green: #4ade80;
+    --arcade-green-dim: #1f7a4c;
+    --arcade-amber: #ffb703;
+    --arcade-ink: #d7ffe8;
+  }
+  body {
+    margin: 0;
+    background: #eee;
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hint {
+    position: fixed; top: 16px; left: 16px;
+    font-size: 13px; color: #444; background: #fff;
+    padding: 8px 12px; border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 10;
+  }
+  .hint kbd { background: #eee; border: 1px solid #ccc; border-radius: 4px; padding: 1px 5px; }
+  .hint button { cursor: pointer; margin-top: 8px; }
+
+  .arcade {
+    position: fixed; inset: 0; z-index: 200; display: none; place-items: center;
+    background: var(--arcade-bg); color: var(--arcade-ink);
+    font-family: 'Space Mono', monospace; overflow: hidden;
+  }
+  .arcade.is-open { display: grid; }
+  .arcade::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0px, rgba(0,0,0,.28) 1px, transparent 1px, transparent 3px);
+    z-index: 5; mix-blend-mode: multiply;
+  }
+  .arcade::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+    z-index: 5;
+  }
+  .arcade-screen {
+    position: relative; z-index: 2; width: min(560px, 92vw); max-height: 88vh; overflow-y: auto;
+    border: 2px solid var(--arcade-green-dim); border-radius: 10px;
+    background: linear-gradient(180deg, rgba(74,222,128,.05), rgba(0,0,0,.2));
+    box-shadow: 0 0 0 6px #000, 0 0 60px rgba(74,222,128,.15), inset 0 0 40px rgba(0,0,0,.6);
+    padding: 28px 26px 24px; text-align: center;
+  }
+  .arcade-title {
+    font-family: 'Press Start 2P', monospace; font-size: clamp(15px, 3vw, 21px); color: var(--arcade-green);
+    text-shadow: 0 0 8px rgba(74,222,128,.7), 0 0 22px rgba(74,222,128,.4);
+    margin: 0 0 6px; letter-spacing: 1px; animation: flicker 3.2s infinite;
+  }
+  .arcade-sub { font-size: 12px; color: var(--arcade-amber); margin: 0 0 22px; letter-spacing: 2px; text-transform: uppercase; }
+  @keyframes flicker { 0%,96%,100%{opacity:1;} 97%{opacity:.82;} 98%{opacity:1;} 99%{opacity:.7;} }
+
+  .arcade-btn {
+    font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--arcade-bg);
+    background: var(--arcade-green); border: none; border-radius: 6px; padding: 14px 18px;
+    cursor: pointer; box-shadow: 0 4px 0 var(--arcade-green-dim);
+    transition: transform .08s ease, box-shadow .08s ease; margin: 6px;
+  }
+  .arcade-btn:hover { filter: brightness(1.08); }
+  .arcade-btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--arcade-green-dim); }
+  .arcade-btn.secondary { background: transparent; color: var(--arcade-green); box-shadow: none; border: 1px solid var(--arcade-green-dim); }
+  .arcade-btn.secondary:active { transform: none; }
+
+  .arcade-close {
+    position: absolute; top: 10px; right: 12px; z-index: 3; background: transparent; border: none;
+    color: var(--arcade-green-dim); font-size: 22px; cursor: pointer; line-height: 1;
+  }
+  .arcade-close:hover { color: var(--arcade-green); }
+
+  .panel { display: none; }
+  .panel.is-active { display: block; }
+  .arcade-copy { font-size: 13px; line-height: 1.7; color: rgba(215,255,232,.82); margin: 0 0 22px; }
+
+  /* hub */
+  .hub-grid { display: grid; gap: 12px; margin-bottom: 6px; }
+  .hub-card {
+    text-align: left; padding: 14px 16px; border: 1px solid var(--arcade-green-dim); border-radius: 8px;
+    background: rgba(74,222,128,.05); cursor: pointer; color: var(--arcade-ink); font-family: 'Space Mono', monospace;
+  }
+  .hub-card:hover { background: rgba(74,222,128,.12); }
+  .hub-card strong { display: block; font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--arcade-green); margin-bottom: 6px; }
+  .hub-card span { font-size: 12px; color: rgba(215,255,232,.7); }
+
+  /* buzzword game */
+  .game-hud { display: flex; justify-content: space-between; font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--arcade-amber); margin-bottom: 16px; }
+  .game-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+  .hole { position: relative; aspect-ratio: 1; border-radius: 10px; background: radial-gradient(circle at 50% 65%, #0a0a0a 0%, #030303 70%); border: 2px solid #142118; overflow: hidden; }
+  .mole {
+    position: absolute; left: 6%; right: 6%; bottom: -100%; top: 8%; display: flex; align-items: center; justify-content: center;
+    text-align: center; border-radius: 8px; background: linear-gradient(180deg, rgba(74,222,128,.22), rgba(74,222,128,.06));
+    border: 1px solid var(--arcade-green-dim); color: var(--arcade-ink); font-size: 10.5px; font-weight: 700; padding: 4px;
+    cursor: pointer; transition: bottom .16s cubic-bezier(.2,.9,.3,1.2); user-select: none;
+  }
+  .hole.up .mole { bottom: 0; }
+  .hole.hit .mole { background: linear-gradient(180deg, rgba(255,183,3,.35), rgba(255,183,3,.08)); border-color: var(--arcade-amber); }
+  .arcade-final-score { font-family: 'Press Start 2P', monospace; font-size: 26px; color: var(--arcade-amber); text-shadow: 0 0 14px rgba(255,183,3,.6); margin: 10px 0 6px; }
+  .arcade-best { font-size: 12px; color: var(--arcade-green-dim); margin-bottom: 20px; }
+
+  /* memory game */
+  .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 34px; margin-bottom: 10px; }
+  .memory-grid div { aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--arcade-green-dim); border-radius: 8px; background: rgba(74,222,128,.05); }
+  .memory-caption { font-size: 9px; opacity: .45; margin: 6px 0 20px; letter-spacing: .5px; }
+  .memory-timer { font-family: 'Press Start 2P', monospace; font-size: 12px; color: var(--arcade-amber); margin-bottom: 14px; }
+  .memory-input { width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 16px; font-family: 'Space Mono', monospace; background: #05130a; border: 1px solid var(--arcade-green-dim); color: var(--arcade-ink); border-radius: 6px; }
+
+  /* dodge game */
+  .dodge-wrap { position: relative; height: 340px; border: 1px solid var(--arcade-green-dim); border-radius: 8px; overflow: hidden; margin-bottom: 14px; background: #05100b; transition: transform .3s ease; }
+  .dodge-wrap.flipped { transform: rotate(180deg); }
+  .dodge-lanes { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
+  .dodge-lanes div { border-right: 1px dashed rgba(74,222,128,.12); }
+  .dodge-player {
+    position: absolute; bottom: 10px; width: 18%; aspect-ratio: 1; border-radius: 6px;
+    background: var(--arcade-green); box-shadow: 0 0 14px rgba(74,222,128,.6);
+    transition: left .12s ease; display: grid; place-items: center; font-size: 16px;
+  }
+  .dodge-obstacle {
+    position: absolute; top: -40px; width: 16%; aspect-ratio: 1; border-radius: 6px;
+    background: var(--arcade-amber); box-shadow: 0 0 10px rgba(255,183,3,.6);
+    display: grid; place-items: center; font-size: 14px;
+  }
+  .dodge-hud { display: flex; justify-content: space-between; font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--arcade-amber); margin-bottom: 12px; }
+  .dodge-toast {
+    position: absolute; top: 42%; left: 50%; transform: translate(-50%,-50%); z-index: 20;
+    font-family: 'Press Start 2P', monospace; font-size: 13px; color: var(--arcade-amber);
+    background: rgba(0,0,0,.75); padding: 12px 16px; border-radius: 8px; text-align: center; display: none;
+  }
+  .fired-screen { text-align: center; }
+  .fired-title { font-family: 'Press Start 2P', monospace; font-size: 20px; color: #ff4d4d; text-shadow: 0 0 14px rgba(255,77,77,.6); margin-bottom: 14px; }
+
+  /* credits */
+  .credits-viewport { height: 300px; overflow: hidden; position: relative; border-top: 1px dashed var(--arcade-green-dim); border-bottom: 1px dashed var(--arcade-green-dim); margin-bottom: 20px; }
+  .credits-scroll { position: absolute; width: 100%; top: 100%; animation: scroll-up 38s linear forwards; }
+  .credits-scroll p { margin: 0 0 18px; font-size: 12px; color: rgba(215,255,232,.85); }
+  .credits-scroll .role { color: var(--arcade-amber); font-family: 'Press Start 2P', monospace; font-size: 10px; margin-bottom: 6px; display: block; }
+  @keyframes scroll-up { from { top: 100%; } to { top: -240%; } }
+</style>
+</head>
+<body>
+
+<div class="hint">
+  Konami code:<br>
+  <kbd>↑</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd><kbd>←</kbd><kbd>→</kbd><kbd>B</kbd><kbd>A</kbd>
+  <br><button onclick="openArcade()">(or click to test)</button>
+</div>
+
+<div class="arcade" id="arcade">
+  <div class="arcade-screen">
+    <button class="arcade-close" id="arcadeClose">&times;</button>
+
+    <!-- HUB -->
+    <div class="panel is-active" data-panel="hub">
+      <p class="arcade-title">CODE ACCEPTED</p>
+      <p class="arcade-sub">Choose your cabinet</p>
+      <div class="hub-grid">
+        <div class="hub-card" onclick="startBuzzword()">
+          <strong>01 · BUZZWORD BUSTER</strong>
+          <span>Whack overrated concepts before they vanish. 20 seconds.</span>
+        </div>
+        <div class="hub-card" onclick="startMemory()">
+          <strong>02 · MEMORY TEST</strong>
+          <span>Memorize the image. That's the whole instruction. Definitely.</span>
+        </div>
+        <div class="hub-card" onclick="startDodge()">
+          <strong>03 · PERFORMANCE REVIEW</strong>
+          <span>Dodge the falling obstacles. Stay employed. Don't get comfortable.</span>
+        </div>
+      </div>
+      <button class="arcade-btn secondary" data-goto="credits" onclick="showPanel('credits')">CREDITS</button>
+    </div>
+
+    <!-- BUZZWORD GAME -->
+    <div class="panel" data-panel="buzzword-game">
+      <div class="game-hud"><span id="hudScore">SCORE: 0</span><span id="hudTime">TIME: 20</span></div>
+      <div class="game-board" id="gameBoard"></div>
+      <p class="arcade-copy" style="margin-bottom:0;">Click the buzzwords before they vanish.</p>
+    </div>
+    <div class="panel" data-panel="buzzword-score">
+      <p class="arcade-title">RUN COMPLETE</p>
+      <div class="arcade-final-score" id="finalScore">0</div>
+      <div class="arcade-best" id="bestScore">best: 0</div>
+      <button class="arcade-btn" onclick="startBuzzword()">PLAY AGAIN</button>
+      <button class="arcade-btn secondary" onclick="showPanel('hub')">BACK TO HUB</button>
+    </div>
+
+    <!-- MEMORY GAME -->
+    <div class="panel" data-panel="memory-show">
+      <p class="arcade-title">MEMORY TEST</p>
+      <p class="arcade-sub">Memorize this image</p>
+      <div class="memory-grid" id="memoryGrid"></div>
+      <p class="memory-caption" id="memoryCaption"></p>
+      <div class="memory-timer" id="memoryTimer">5</div>
+    </div>
+    <div class="panel" data-panel="memory-quiz">
+      <p class="arcade-title">QUIZ TIME</p>
+      <p class="arcade-copy">Quick — what did the tiny caption below the image say?</p>
+      <input class="memory-input" id="memoryInput" placeholder="type your answer...">
+      <button class="arcade-btn" onclick="revealMemory()">SUBMIT</button>
+    </div>
+    <div class="panel" data-panel="memory-reveal">
+      <p class="arcade-title">CAUGHT YOU</p>
+      <p class="arcade-copy">
+        Man... why did you memorize the <em>image</em> instead of reading the actual instructions? 😏<br><br>
+        There was no quiz about the picture. There was never going to be one. This game cannot be won,
+        it can only be understood too late.
+      </p>
+      <button class="arcade-btn" onclick="startMemory()">TRY AGAIN</button>
+      <button class="arcade-btn secondary" onclick="showPanel('hub')">BACK TO HUB</button>
+    </div>
+
+    <!-- DODGE GAME -->
+    <div class="panel" data-panel="dodge-game">
+      <div class="dodge-hud"><span id="dodgeTime">TIME: 10</span><span id="dodgeScore">DODGED: 0</span></div>
+      <div class="dodge-wrap" id="dodgeWrap">
+        <div class="dodge-lanes"><div></div><div></div><div></div></div>
+        <div class="dodge-player" id="dodgePlayer">🙂</div>
+        <div class="dodge-toast" id="dodgeToast"></div>
+      </div>
+      <p class="arcade-copy" style="margin-bottom:0;">Arrow keys (or buttons below) to move. Survive.</p>
+      <div style="margin-top:10px;">
+        <button class="arcade-btn secondary" onclick="dodgeMove(-1)">◀</button>
+        <button class="arcade-btn secondary" onclick="dodgeMove(1)">▶</button>
+      </div>
+    </div>
+    <div class="panel" data-panel="dodge-fired">
+      <div class="fired-screen">
+        <p class="fired-title">GO HOME. YOU'RE FIRED.</p>
+        <p class="arcade-copy">
+          Performance review: could not dodge a single box while upside-down and confused.<br><br>
+          Employee of the month: nobody. HR has been notified (they have not).
+        </p>
+        <button class="arcade-btn" onclick="startDodge()">REAPPLY</button>
+        <button class="arcade-btn secondary" onclick="showPanel('hub')">BACK TO HUB</button>
+      </div>
+    </div>
+
+    <!-- CREDITS -->
+    <div class="panel" data-panel="credits">
+      <p class="arcade-title">CREDITS</p>
+      <div class="credits-viewport">
+        <div class="credits-scroll" id="creditsScroll"></div>
+      </div>
+      <button class="arcade-btn secondary" onclick="showPanel('hub')">BACK TO HUB</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ============ SECRET SEQUENCE ============
+  const secretSeq = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  let konamiPos = 0;
+  window.addEventListener("keydown", (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (arcade.classList.contains("is-open") && document.querySelector('[data-panel="dodge-game"]').classList.contains("is-active")) return;
+    if (key === secretSeq[konamiPos]) {
+      konamiPos++;
+      if (konamiPos === secretSeq.length) { konamiPos = 0; openArcade(); }
+    } else { konamiPos = (key === secretSeq[0]) ? 1 : 0; }
+  });
+
+  const arcade = document.getElementById("arcade");
+  const panels = document.querySelectorAll(".panel");
+  function showPanel(name) {
+    panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === name));
+    if (name === "credits") buildCredits();
+  }
+  function openArcade() { arcade.classList.add("is-open"); showPanel("hub"); }
+  function closeArcade() {
+    arcade.classList.remove("is-open");
+    stopBuzzword(); stopDodge();
+    if (window.parent !== window) window.parent.postMessage("closeArcade", "*");
+  }
+  document.getElementById("arcadeClose").addEventListener("click", closeArcade);
+  arcade.addEventListener("click", (e) => { if (e.target === arcade) closeArcade(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape" && arcade.classList.contains("is-open")) closeArcade(); });
+
+  // ============ BUZZWORD BUSTER ============
+  const BUZZWORDS = ["10x Engineer","AGI by 2027","Cold Plunge","Hustle Culture","Passive Income","Manifesting","Biohacking","Girlboss","Web3","Synergy","Rizz","Quantum (misused)"];
+  let bScore = 0, bTime = 20, bGameTimer = null, bMoleTimer = null;
+  const board = document.getElementById("gameBoard");
+  function buildBoard() {
+    board.innerHTML = "";
+    for (let i = 0; i < 9; i++) {
+      const hole = document.createElement("div"); hole.className = "hole";
+      const mole = document.createElement("div"); mole.className = "mole";
+      hole.appendChild(mole);
+      hole.addEventListener("click", () => whack(hole));
+      board.appendChild(hole);
+    }
+  }
+  function popMole() {
+    const holes = [...board.children];
+    holes.forEach(h => h.classList.remove("up","hit"));
+    const hole = holes[Math.floor(Math.random()*holes.length)];
+    hole.querySelector(".mole").textContent = BUZZWORDS[Math.floor(Math.random()*BUZZWORDS.length)];
+    hole.classList.add("up");
+  }
+  function whack(hole) {
+    if (!hole.classList.contains("up") || hole.classList.contains("hit")) return;
+    hole.classList.add("hit"); bScore++;
+    document.getElementById("hudScore").textContent = `SCORE: ${bScore}`;
+  }
+  function startBuzzword() {
+    bScore = 0; bTime = 20;
+    document.getElementById("hudScore").textContent = "SCORE: 0";
+    document.getElementById("hudTime").textContent = "TIME: 20";
+    buildBoard(); showPanel("buzzword-game"); stopBuzzword();
+    popMole();
+    bMoleTimer = setInterval(popMole, 750);
+    bGameTimer = setInterval(() => {
+      bTime--; document.getElementById("hudTime").textContent = `TIME: ${bTime}`;
+      if (bTime <= 0) endBuzzword();
+    }, 1000);
+  }
+  function stopBuzzword() { clearInterval(bGameTimer); clearInterval(bMoleTimer); }
+  function endBuzzword() {
+    stopBuzzword();
+    const best = Math.max(bScore, Number(localStorage.getItem("buzzwordHighScore")||0));
+    localStorage.setItem("buzzwordHighScore", String(best));
+    document.getElementById("finalScore").textContent = bScore;
+    document.getElementById("bestScore").textContent = `best: ${best}`;
+    showPanel("buzzword-score");
+  }
+
+  // ============ MEMORY PRANK ============
+  const EMOJI_POOL = ["🐟","🪐","🧦","🥨","🦖","🛸","🧵","🍄","🦑","🪀","🧊","🎏","🥐","🦥","🧃"];
+  const CAPTIONS = [
+    "the goldfish knows something you don't",
+    "this sentence is the actual test",
+    "nobody reads captions, and that's the point",
+    "nice try, this was never about the picture"
+  ];
+  let memoryCaptionText = "";
+  let memoryTimerInt = null;
+  function startMemory() {
+    const grid = document.getElementById("memoryGrid");
+    grid.innerHTML = "";
+    for (let i=0;i<9;i++) {
+      const cell = document.createElement("div");
+      cell.textContent = EMOJI_POOL[Math.floor(Math.random()*EMOJI_POOL.length)];
+      grid.appendChild(cell);
+    }
+    memoryCaptionText = CAPTIONS[Math.floor(Math.random()*CAPTIONS.length)];
+    document.getElementById("memoryCaption").textContent = `(also, please don't memorize the image — memorize this instead: "${memoryCaptionText}")`;
+    let t = 5;
+    document.getElementById("memoryTimer").textContent = t;
+    showPanel("memory-show");
+    clearInterval(memoryTimerInt);
+    memoryTimerInt = setInterval(() => {
+      t--; document.getElementById("memoryTimer").textContent = t;
+      if (t <= 0) { clearInterval(memoryTimerInt); document.getElementById("memoryInput").value=""; showPanel("memory-quiz"); }
+    }, 1000);
+  }
+  function revealMemory() { showPanel("memory-reveal"); }
+
+  // ============ REVERSE DODGE / "PERFORMANCE REVIEW" ============
+  let dLane = 1, dScore = 0, dTime = 10, dReversed = false, dFlipped = false;
+  let dGameTimer = null, dSpawnTimer = null;
+  const dodgeWrap = document.getElementById("dodgeWrap");
+  const dodgePlayer = document.getElementById("dodgePlayer");
+  const dodgeToast = document.getElementById("dodgeToast");
+  function laneToLeft(lane) { return [6, 41, 76][lane] + "%"; }
+  function dodgeMove(dir) {
+    if (!document.querySelector('[data-panel="dodge-game"]').classList.contains("is-active")) return;
+    const actualDir = dReversed ? -dir : dir;
+    dLane = Math.min(2, Math.max(0, dLane + actualDir));
+    dodgePlayer.style.left = laneToLeft(dLane);
+  }
+  window.addEventListener("keydown", (e) => {
+    if (!document.querySelector('[data-panel="dodge-game"]').classList.contains("is-active")) return;
+    if (e.key === "ArrowLeft") dodgeMove(-1);
+    if (e.key === "ArrowRight") dodgeMove(1);
+  });
+  function spawnObstacle() {
+    const lane = Math.floor(Math.random()*3);
+    const el = document.createElement("div");
+    el.className = "dodge-obstacle";
+    el.style.left = laneToLeft(lane);
+    el.textContent = ["📎","📄","☕","⏰"][Math.floor(Math.random()*4)];
+    dodgeWrap.appendChild(el);
+    let y = -40;
+    const fall = setInterval(() => {
+      y += 12;
+      el.style.top = y + "px";
+      if (y > 340) { clearInterval(fall); el.remove(); dScore++; document.getElementById("dodgeScore").textContent = `DODGED: ${dScore}`; }
+    }, 30);
+  }
+  function startDodge() {
+    dLane = 1; dScore = 0; dTime = 10; dReversed = false; dFlipped = false;
+    dodgePlayer.style.left = laneToLeft(1);
+    dodgeWrap.classList.remove("flipped");
+    document.getElementById("dodgeScore").textContent = "DODGED: 0";
+    document.getElementById("dodgeTime").textContent = "TIME: 10";
+    dodgeToast.style.display = "none";
+    [...dodgeWrap.querySelectorAll(".dodge-obstacle")].forEach(o => o.remove());
+    showPanel("dodge-game");
+    stopDodge();
+    dSpawnTimer = setInterval(spawnObstacle, 700);
+    dGameTimer = setInterval(() => {
+      dTime--;
+      document.getElementById("dodgeTime").textContent = `TIME: ${dTime}`;
+      if (dTime === 5 && !dReversed) triggerTwist();
+      if (dTime <= 0) endDodge();
+    }, 1000);
+  }
+  function triggerTwist() {
+    // pick exactly ONE twist -- doing both cancels out and controls end up correct again
+    const twist = Math.random() < 0.5 ? "reverse" : "flip";
+    dodgeToast.textContent = "OKAY THAT'S ENOUGH OF THAT.";
+    dodgeToast.style.display = "block";
+    setTimeout(() => {
+      dodgeToast.style.display = "none";
+      if (twist === "reverse") {
+        dReversed = true;
+      } else {
+        dodgeWrap.classList.add("flipped");
+        dFlipped = true;
+      }
+    }, 1100);
+  }
+  function stopDodge() { clearInterval(dGameTimer); clearInterval(dSpawnTimer); }
+  function endDodge() {
+    stopDodge();
+    showPanel("dodge-fired");
+  }
+
+  // ============ CREDITS (random 2-of-3 cast) ============
+  function buildCredits() {
+    const cast = ["Tom Holland", "Zendaya", "Timothée Chalamet"];
+    const shuffled = [...cast].sort(() => Math.random() - 0.5).slice(0, 2);
+    const scroll = document.getElementById("creditsScroll");
+    scroll.innerHTML = `
+      <p><span class="role">BUZZWORD BUSTER · MEMORY TEST · PERFORMANCE REVIEW</span>an arcade nobody asked for</p>
+      <p><span class="role">STARRING (PROBABLY)</span>${shuffled.join(" & ")}</p>
+      <p style="font-size:11px; opacity:.7;">(contractually required by 2026 cinema law)</p>
+      <p><span class="role">LEAD RESEARCHER</span>Fuat Arslan</p>
+      <p><span class="role">CHIEF OVERRATED CONCEPT OFFICER</span>You, apparently</p>
+      <p><span class="role">DIFFUSION CONSULTANT</span>a bridge that talks to itself</p>
+      <p><span class="role">CGPA VERIFICATION</span>4.00 out of 4.00, allegedly</p>
+      <p><span class="role">KONAMI CODE LICENSING</span>expired in 1986, used anyway</p>
+      <p><span class="role">HR DEPARTMENT</span>does not actually exist</p>
+      <p><span class="role">SPECIAL THANKS</span>everyone who did NOT press Ctrl+U</p>
+      <p><span class="role">EVEN MORE SPECIAL THANKS</span>everyone who did, and kept scrolling anyway</p>
+      <p style="margin-top:30px;">— thanks for playing —</p>
+    `;
+    scroll.style.animation = "none";
+    void scroll.offsetWidth;
+    scroll.style.animation = "scroll-up 38s linear forwards";
+  }
+</script>
+
+</body>
+</html>

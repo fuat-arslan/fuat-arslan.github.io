@@ -1916,5 +1916,43 @@ My work lives at the intersection of mathematics, deep learning, and medical ima
       if (ctx) resizePortalCanvas(ctx);
     });
   </script>
+
+  <script>
+    // ===== SEPARATE ARCADE EASTER EGG (independent of the portal above) =====
+    (function () {
+      // Change this sequence any time -- it's the only thing that defines the secret code.
+      const secretSeq = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+      let pos = 0;
+      let arcadeFrame = null;
+
+      function openArcadeFrame() {
+        if (!arcadeFrame) {
+          arcadeFrame = document.createElement("iframe");
+          arcadeFrame.src = "assets/arcade.html";
+          Object.assign(arcadeFrame.style, {
+            position: "fixed", inset: "0", width: "100%", height: "100%",
+            border: "none", zIndex: "9999", display: "none"
+          });
+          document.body.appendChild(arcadeFrame);
+        }
+        arcadeFrame.style.display = "block";
+      }
+
+      window.addEventListener("keydown", (e) => {
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        if (key === secretSeq[pos]) {
+          pos++;
+          if (pos === secretSeq.length) { pos = 0; openArcadeFrame(); }
+        } else {
+          pos = (key === secretSeq[0]) ? 1 : 0;
+        }
+      });
+
+      window.addEventListener("message", (e) => {
+        if (e.data === "closeArcade" && arcadeFrame) arcadeFrame.style.display = "none";
+      });
+    })();
+  </script>
+
 </body>
 </html>
