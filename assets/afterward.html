@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<style>
+  :root {
+    --a-bg: #050505;
+    --a-ink: #e8e4dc;
+    --a-muted: #6b6862;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--a-bg);
+    overflow: hidden;
+  }
+  body {
+    display: grid;
+    place-items: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--a-ink);
+    transition: background 1.4s ease;
+    cursor: default;
+  }
+  .stage {
+    position: relative;
+    z-index: 2;
+    width: min(640px, 88vw);
+    text-align: center;
+    padding: 0 12px;
+  }
+  .line {
+    font-size: clamp(16px, 2.1vw, 20px);
+    line-height: 1.95;
+    color: var(--a-ink);
+    opacity: 0;
+    margin: 0 0 4px;
+    transition: opacity 2s ease;
+    letter-spacing: .2px;
+  }
+  .line.is-visible { opacity: .92; }
+  .line.spacer { height: 18px; margin: 0; }
+  #faLine {
+    margin-top: 14px;
+    font-style: italic;
+    letter-spacing: .5px;
+  }
+  .close-hint {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Georgia, serif;
+    font-size: 11px;
+    letter-spacing: .4px;
+    color: var(--a-muted);
+    opacity: 0;
+    transition: opacity 2s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .close-hint.is-visible { opacity: .55; }
+  canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body id="pageBody">
+
+<div class="stage" id="stage"></div>
+<p class="close-hint" id="closeHint">(click anywhere, or press esc, when you're ready to leave)</p>
+<canvas id="particleCanvas"></canvas>
+
+<script>
+  // ============ CONTENT ============
+  // Paragraph lines with "" used as paragraph-break spacing.
+  const paragraphs = [
+    "Most of what a person builds will be forgotten completely.",
+    "Not eventually. Almost immediately.",
+    "The years spent, the certainty it mattered, none of it is owed a future.",
+    "",
+    "There is no guarantee anyone comes after.",
+    "No promise the work outlives the ache of making it.",
+    "Most of it just ends, quietly, with no one noticing it was ever there.",
+    "",
+    "But once in a while, something survives long enough for someone else to stand on it.",
+    "Not because it deserved to. Just because it did.",
+    "",
+    "That is the only kind of infinite available to us.",
+    "Not to be remembered. To be built upon.",
+    "",
+    "Still, if you are reading this, some part of it survived.",
+    "",
+    "For those who come after."
+  ];
+
+  const stage = document.getElementById("stage");
+  const closeHint = document.getElementById("closeHint");
+  const canvas = document.getElementById("particleCanvas");
+  const ctx = canvas.getContext("2d");
+  const pageBody = document.getElementById("pageBody");
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener("resize", resize);
+
+  // Build the paragraph elements (hidden at first, faded in one at a time)
+  const lineEls = [];
+  paragraphs.forEach(text => {
+    const p = document.createElement("p");
+    if (text === "") {
+      p.className = "line spacer";
+    } else {
+      p.className = "line diss-line";
+      p.textContent = text;
+    }
+    stage.appendChild(p);
+    lineEls.push(p);
+  });
+
+  // F.A. gets its own element, appended after, revealed last, dissolves slowest.
+  const faLine = document.createElement("p");
+  faLine.className = "line";
+  faLine.id = "faLine";
+  faLine.textContent = "F.A.";
+  stage.appendChild(faLine);
+
+  // ============ STAGED REVEAL ============
+  let revealTimer = 400;
+  lineEls.forEach(el => {
+    const isSpacer = el.classList.contains("spacer");
+    revealTimer += isSpacer ? 500 : 1550;
+    if (!isSpacer) {
+      setTimeout(() => el.classList.add("is-visible"), revealTimer);
+    }
+  });
+  revealTimer += 900;
+  setTimeout(() => faLine.classList.add("is-visible"), revealTimer);
+  revealTimer += 1800;
+  setTimeout(() => closeHint.classList.add("is-visible"), revealTimer);
+
+  // ============ DISSOLVE (same technique as tested separately) ============
+  let particles = [];
+  let rafId = null;
+  let isClosing = false;
+
+  function samplePointsFromElement(el) {
+    const rect = el.getBoundingClientRect();
+    const off = document.createElement("canvas");
+    off.width = rect.width;
+    off.height = rect.height;
+    const octx = off.getContext("2d");
+    octx.fillStyle = "#fff";
+    const style = window.getComputedStyle(el);
+    octx.font = `${style.fontStyle} ${style.fontSize} ${style.fontFamily}`;
+    octx.textBaseline = "top";
+    const textWidth = octx.measureText(el.innerText).width;
+    const startX = (rect.width - textWidth) / 2;
+    octx.fillText(el.innerText, startX, 4);
+
+    const imgData = octx.getImageData(0, 0, off.width, off.height).data;
+    const points = [];
+    const step = 2;
+    for (let y = 0; y < off.height; y += step) {
+      for (let x = 0; x < off.width; x += step) {
+        const idx = (y * off.width + x) * 4;
+        if (imgData[idx + 3] > 120) points.push({ x: rect.left + x, y: rect.top + y });
+      }
+    }
+    return points;
+  }
+
+  function dissolveElement(el, { speed = 1, holdFrames = 0 } = {}) {
+    if (getComputedStyle(el).opacity < 0.05) return; // never-shown lines have nothing to dissolve
+    const points = samplePointsFromElement(el);
+    el.style.visibility = "hidden";
+    const newParticles = points.map(p => ({
+      x: p.x, y: p.y,
+      vx: (Math.random() - 0.5) * 0.4 * speed,
+      vy: -(0.25 + Math.random() * 0.55) * speed,
+      drift: Math.random() * Math.PI * 2,
+      size: 1 + Math.random() * 1.6,
+      life: 1,
+      decay: (0.0035 + Math.random() * 0.004) * speed,
+      delay: holdFrames + Math.random() * 30
+    }));
+    particles.push(...newParticles);
+    if (!rafId) animate();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.delay > 0) {
+        p.delay--; alive = true;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(232, 228, 220, 0.92)`;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        return;
+      }
+      p.drift += 0.02;
+      p.x += p.vx + Math.sin(p.drift) * 0.15;
+      p.y += p.vy;
+      p.life -= p.decay;
+      if (p.life > 0) {
+        alive = true;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(232, 228, 220, ${Math.max(p.life, 0) * 0.85})`;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+    particles = particles.filter(p => p.delay > 0 || p.life > 0);
+    if (alive) {
+      rafId = requestAnimationFrame(animate);
+    } else {
+      rafId = null;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // ============ CLOSE SEQUENCE ============
+  function beginClosing() {
+    if (isClosing) return;
+    isClosing = true;
+    closeHint.classList.remove("is-visible");
+
+    lineEls.forEach(el => { if (!el.classList.contains("spacer")) dissolveElement(el, { speed: 1.6, holdFrames: 0 }); });
+
+    setTimeout(() => {
+      dissolveElement(faLine, { speed: 0.45, holdFrames: 0 });
+      const checkDone = setInterval(() => {
+        if (particles.length === 0 && !rafId) {
+          clearInterval(checkDone);
+          finalizeClose();
+        }
+      }, 100);
+    }, 2400);
+  }
+
+  function finalizeClose() {
+    pageBody.style.background = "#000";
+    setTimeout(() => {
+      if (window.parent !== window) window.parent.postMessage("closeAfterward", "*");
+    }, 900);
+  }
+
+  window.addEventListener("click", beginClosing);
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") beginClosing(); });
+</script>
+
+</body>
+</html>
