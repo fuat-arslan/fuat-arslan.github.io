@@ -14,22 +14,10 @@
   }
   body {
     margin: 0;
-    background: #eee;
+    background: var(--arcade-bg);
     font-family: 'Space Mono', monospace;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
-  .hint {
-    position: fixed; top: 16px; left: 16px;
-    font-size: 13px; color: #444; background: #fff;
-    padding: 8px 12px; border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 10;
-  }
-  .hint kbd { background: #eee; border: 1px solid #ccc; border-radius: 4px; padding: 1px 5px; }
-  .hint button { cursor: pointer; margin-top: 8px; }
-
   .arcade {
     position: fixed; inset: 0; z-index: 200; display: none; place-items: center;
     background: var(--arcade-bg); color: var(--arcade-ink);
@@ -148,12 +136,6 @@
 </head>
 <body>
 
-<div class="hint">
-  Konami code:<br>
-  <kbd>↑</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd><kbd>←</kbd><kbd>→</kbd><kbd>B</kbd><kbd>A</kbd>
-  <br><button onclick="openArcade()">(or click to test)</button>
-</div>
-
 <div class="arcade" id="arcade">
   <div class="arcade-screen">
     <button class="arcade-close" id="arcadeClose">&times;</button>
@@ -257,18 +239,6 @@
 </div>
 
 <script>
-  // ============ SECRET SEQUENCE ============
-  const secretSeq = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-  let konamiPos = 0;
-  window.addEventListener("keydown", (e) => {
-    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    if (arcade.classList.contains("is-open") && document.querySelector('[data-panel="dodge-game"]').classList.contains("is-active")) return;
-    if (key === secretSeq[konamiPos]) {
-      konamiPos++;
-      if (konamiPos === secretSeq.length) { konamiPos = 0; openArcade(); }
-    } else { konamiPos = (key === secretSeq[0]) ? 1 : 0; }
-  });
-
   const arcade = document.getElementById("arcade");
   const panels = document.querySelectorAll(".panel");
   function showPanel(name) {
@@ -458,6 +428,10 @@
     void scroll.offsetWidth;
     scroll.style.animation = "scroll-up 38s linear forwards";
   }
+
+  // Auto-open: by the time this file loads (via the parent page's iframe),
+  // the secret sequence was already entered on the main page.
+  openArcade();
 </script>
 
 </body>
