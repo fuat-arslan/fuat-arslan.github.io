@@ -133,6 +133,7 @@
 
   // Build the paragraph elements (hidden at first, faded in one at a time)
   const lineEls = [];
+  const revealTimeoutIds = [];
   paragraphs.forEach(item => {
     const isSpacer = item === "";
     const isEmphasis = typeof item === "object" && item.emphasis;
@@ -168,20 +169,20 @@
       revealTimer += 500;
     } else if (isEmphasis) {
       revealTimer += 1400; // extra pause before it arrives
-      setTimeout(() => el.classList.add("is-visible"), revealTimer);
+      revealTimeoutIds.push(setTimeout(() => el.classList.add("is-visible"), revealTimer));
       revealTimer += 2600; // extra pause after, let it sit before continuing
     } else {
       revealTimer += 1550;
-      setTimeout(() => el.classList.add("is-visible"), revealTimer);
+      revealTimeoutIds.push(setTimeout(() => el.classList.add("is-visible"), revealTimer));
     }
   });
   revealTimer += 900;
-  setTimeout(() => faLine.classList.add("is-visible"), revealTimer);
+  revealTimeoutIds.push(setTimeout(() => faLine.classList.add("is-visible"), revealTimer));
   revealTimer += 1800;
-  setTimeout(() => {
+  revealTimeoutIds.push(setTimeout(() => {
     closeHint.classList.add("is-visible");
     revealComplete = true;
-  }, revealTimer);
+  }, revealTimer));
 
   // ============ DISSOLVE (same technique as tested separately) ============
   let particles = [];
@@ -270,6 +271,7 @@
   function beginClosing() {
     if (isClosing) return;
     isClosing = true;
+    revealTimeoutIds.forEach(id => clearTimeout(id));
     closeHint.classList.remove("is-visible");
 
     if (!revealComplete) {
