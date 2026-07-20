@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title></title>
 <style>
   :root {
@@ -75,17 +76,18 @@
   .early-msg {
     position: relative;
     z-index: 2;
-    font-size: clamp(15px, 2vw, 18px);
+    font-size: clamp(17px, 4.5vw, 19px);
     font-style: italic;
-    line-height: 1.9;
-    color: var(--a-muted);
+    line-height: 1.85;
+    color: rgba(232, 228, 220, .82);
     opacity: 0;
     transition: opacity 1.6s ease;
     text-align: center;
-    width: min(520px, 86vw);
-    margin: 0;
+    width: min(520px, 88vw);
+    margin: 0 auto;
+    padding: 0 16px;
   }
-  .early-msg.is-visible { opacity: .85; }
+  .early-msg.is-visible { opacity: 1; }
   canvas {
     position: fixed;
     inset: 0;
