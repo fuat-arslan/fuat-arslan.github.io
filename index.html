@@ -1122,7 +1122,7 @@
 
     <section id="about">
       <h2>About Me</h2>
-      <p>Hi, I’m Fuat — a researcher, dreamer, and builder of intelligent machines that help doctors see the <button class="secret-trigger" type="button" data-text="invisible" aria-controls="portal" aria-expanded="false" title="Follow the faint signal">invisible</button>. I’m currently pursuing my M.Sc. in Electrical and Electronics Engineering at Bilkent University, where I study how to make AI systems not just smart, but trustworthy.
+      <p>Hi, I’m Fuat — a researcher, dreamer, and builder of intelligent machines that help doctors see the <button class="secret-trigger" type="button" data-text="invisible" aria-controls="portal" aria-expanded="false" title="Follow the faint signal">invisible</button>. I’m currently pursuing my PhD in Electrical Engineering at StanfordUniversity, where I study how to make AI systems not just smart, but trustworthy.
 
 My work lives at the intersection of mathematics, deep learning, and medical imaging — creating models that can actually make sense in a hospital, not just on a benchmark.</p>
       <div class="row">
@@ -1231,6 +1231,79 @@ My work lives at the intersection of mathematics, deep learning, and medical ima
         I’ve trained in many styles — kickboxing, Wushu, Wing Chun, and now Kali Eskrima. What keeps me in it isn’t philosophy or discipline; it’s the feeling itself.
       </p>
     </section>
+<!-- chaos-curiosity:start -->
+<section id="chaos-curiosity" aria-label="Harnessing Chaos">
+<h2>Harnessing Chaos</h2>
+<div class="hc-prose hc-opening">
+<p>There is nothing particularly meaningful about this noise. At least, not to you or me.</p>
+<p>Yet it could be the beginning of something beautiful. Or perhaps just more noise.</p>
+</div>
+<figure class="hc-experiment">
+<div class="hc-sketch">
+<svg id="hc-graph" viewBox="0 0 340 230" tabindex="0" role="slider" aria-label="Choose a trajectory and move along its steps using arrow keys or drag" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0">
+<g id="hc-curves"></g><g id="hc-dots"></g><circle id="hc-halo" cx="22" cy="117" r="10" fill="currentColor" opacity=".10"/><circle id="hc-marker" cx="22" cy="117" r="4.8" fill="currentColor" stroke="var(--bg,#f9fafb)" stroke-width="1.5"/>
+<g fill="currentColor" font-size="10" opacity=".7"><path d="M22 202 H312 m-5 -3 5 3 -5 3" fill="none" stroke="currentColor" stroke-width=".8" opacity=".5"/><text x="22" y="218">0</text><text x="312" y="218" text-anchor="end">30 steps</text></g>
+</svg>
+<div class="hc-controls"><span class="hc-hint">Follow a path.</span><span class="hc-tools"><button type="button" data-path="A" aria-pressed="false" aria-label="Select path I">I</button><button type="button" data-path="C" aria-pressed="false" aria-label="Select path II">II</button><button type="button" data-path="D" aria-pressed="false" aria-label="Select path III">III</button><span class="hc-sep"></span><button type="button" id="hc-play" aria-label="Play selected path" title="Play selected path">▷</button><button type="button" id="hc-reset" aria-label="Return to beginning" title="Return to beginning">↺</button></span></div>
+</div>
+<div class="hc-image"><img id="hc-frame" src="harnessing-chaos/initial.webp" alt="Shared starting noise" width="512" height="512"><figcaption id="hc-state" aria-live="polite">A shared beginning.</figcaption></div>
+</figure>
+<div class="hc-prose hc-closing">
+<p>What makes the difference is neither the beginning nor the end alone, but the path and every step along it.</p>
+<p>Mathematics gives us the power to harness chaos. That is what fascinates me about generative modeling.</p>
+<p><a class="hc-quiet" href="#path-in-between" id="hc-blog-link">Perhaps life is not so different.</a></p>
+<p class="hc-after">Perhaps this website is just an <a href="chaos.html" id="hc-enter" class="hc-quiet">initial distribution</a>, too. Who knows what it will become?</p>
+<div class="hc-signature"><span>fA</span><img hidden src="assets/fa-signature.png" alt="fA" onload="this.hidden=false;this.previousElementSibling.hidden=true"></div>
+</div>
+<dialog id="path-in-between" class="hc-blog"><button id="hc-close-blog" type="button" aria-label="Close article">×</button><article><h2>The Path in Between</h2><p><em>Some thoughts on diffusion, randomness, and life.</em></p><p>Take a look at some Gaussian noise. There is nothing particularly meaningful about it. At least, not to you or me. Yet it could be the beginning of something beautiful.</p><p>This is one of the reasons I became fascinated with generative modeling. Even after years of working with diffusion models, I still find something remarkable about the idea that mathematics gives us the power to harness chaos.</p><p>But what fascinates me even more is the path. The same noise can lead to a beautiful image, something entirely different, or simply more noise. What makes the difference is how we transform it, step by step.</p><p>I sometimes wonder whether life is all that different. None of us gets to choose all our initial conditions, and randomness never really disappears along the way. Yet we get to make choices. We can influence the dynamics.</p><p>And who takes those steps? Do we define the path, or does the path define us? Perhaps both: the current state shapes the next step, and each step changes the current state.</p><p>This website is another experiment with randomness. A collection of unrelated interests, unfinished thoughts, failed experiments, stories, memories, and whatever else happens to occupy my mind.</p><p>I have no particular destination in mind for it. Let's see what emerges.</p><p style="text-align:right;font-style:italic">fA</p></article></dialog>
+</section>
+<style>
+#chaos-curiosity{margin-bottom:38px;max-width:760px;--hc-muted:var(--muted,#64748b)}
+#chaos-curiosity .hc-prose{max-width:760px}
+#chaos-curiosity .hc-prose p{margin:0 0 12px;line-height:1.65;text-align:left}
+#chaos-curiosity .hc-opening p:last-child{margin-bottom:0}
+#chaos-curiosity .hc-experiment{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,250px);gap:34px;align-items:center;width:min(100%,650px);margin:24px auto 25px;padding:0;border:0;background:none;}
+#chaos-curiosity .hc-sketch{min-width:0;padding:0 0 18px;}
+#hc-graph{display:block;width:100%;height:auto;color:var(--hc-muted);touch-action:none;cursor:crosshair;overflow:visible;outline-offset:3px}
+#hc-graph:focus-visible{outline:1px solid var(--hc-muted);border-radius:3px}
+#chaos-curiosity .hc-controls{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:2px 0 0 6px;color:var(--hc-muted);font-size:11px;}
+#chaos-curiosity .hc-tools{display:flex;align-items:center;gap:4px;flex-shrink:0}
+#chaos-curiosity .hc-sep{height:12px;border-left:1px solid var(--border,#d5dce5);margin:0 2px}
+#chaos-curiosity .hc-tools button{border:0;background:none;font:inherit;line-height:1;color:inherit;min-width:23px;min-height:28px;padding:4px;cursor:pointer;border-radius:3px;}
+#chaos-curiosity .hc-tools button:hover,#chaos-curiosity .hc-tools button[aria-pressed=true]{color:var(--ink,#1e293b);background:#8090a014;}
+#chaos-curiosity #hc-play,#chaos-curiosity #hc-reset{font-size:16px;}
+#chaos-curiosity .hc-image{min-width:0}
+#hc-frame{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;border-radius:3px;background:#777;}
+#chaos-curiosity figcaption{font-size:11px;text-align:center;color:var(--hc-muted);min-height:18px;margin:5px 0 0;font-variant-numeric:tabular-nums;}
+#chaos-curiosity .hc-after{font-style:italic;color:var(--hc-muted);padding-top:11px;}
+#chaos-curiosity .hc-quiet{color:inherit;text-decoration:none;}
+#chaos-curiosity .hc-quiet:hover,#chaos-curiosity .hc-quiet:focus-visible{text-decoration:underline;text-underline-offset:3px;}
+#chaos-curiosity .hc-signature{text-align:right;margin:0 0 0;font-family:Georgia,serif;font-style:italic;font-size:22px;color:var(--hc-muted);}
+#chaos-curiosity .hc-signature img{width:72px;height:auto;max-height:65px;object-fit:contain;vertical-align:middle;}
+#chaos-curiosity .hc-signature [hidden]{display:none!important;}
+#chaos-curiosity .hc-blog{box-sizing:border-box;border:1px solid var(--border,#d5dce5);border-radius:7px;background:var(--panel,#fff);color:var(--ink,#1e293b);width:min(640px,90vw);max-height:85vh;padding:32px;line-height:1.7;}
+#chaos-curiosity .hc-blog::backdrop{background:#10182880}#hc-close-blog{float:right;border:0;background:transparent;color:inherit;cursor:pointer;font-size:22px}#chaos-curiosity .hc-blog h2{margin-top:0}
+@media(max-width:580px){#chaos-curiosity .hc-experiment{grid-template-columns:1fr;gap:8px;width:min(100%,310px);margin:20px auto 23px}#chaos-curiosity .hc-image{grid-row:1;width:min(100%,230px);margin:auto}#chaos-curiosity .hc-sketch{padding:0}#chaos-curiosity .hc-prose p{margin-bottom:10px}}
+</style>
+<script>(()=>{
+const $=id=>document.getElementById(id),img=$('hc-frame'),g=$('hc-graph'),play=$('hc-play'),buttons=[...document.querySelectorAll('#chaos-curiosity [data-path]')],ns='http://www.w3.org/2000/svg';
+const routes=[{id:'A',name:'I',c:'#547d76',knots:[[0,117],[3,112],[8,72],[13,81],[18,41],[24,47],[30,21]]},{id:'C',name:'II',c:'#82769a',knots:[[0,117],[5,132],[10,120],[16,94],[21,102],[25,73],[30,76]]},{id:'D',name:'III',c:'#a38a69',knots:[[0,117],[4,143],[9,151],[12,139],[19,180],[24,171],[30,163]]}];let path=null,step=0,timer=null,token=0,drag=null,playing=false;const cache=new Map();
+const x=s=>22+290*s/30,y=(r,s)=>{let k=r.knots.findIndex((v,i)=>i>0&&s<=v[0])-1;if(k<0)k=r.knots.length-2;const [a,b]=r.knots[k],[c,d]=r.knots[k+1],t=(s-a)/(c-a);const u=t*t*(3-2*t);return b+(d-b)*u};
+function el(tag,attrs,parent){const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));parent.append(n);return n}
+for(const r of routes){let d=Array.from({length:121},(_,i)=>{let s=i/4;return `${i?'L':'M'}${x(s).toFixed(2)} ${y(r,s).toFixed(2)}`}).join(' ');r.line=el('path',{d,stroke:r.c,'stroke-width':1.55,'stroke-linecap':'round','stroke-linejoin':'round',fill:'none',opacity:.85},$('hc-curves'));r.dots=[];for(let s=1;s<=30;s++)r.dots.push(el('circle',{cx:x(s),cy:y(r,s),r:s===30?3.1:(s%5===0?1.85:1.05),fill:r.c,opacity:s%5===0?.8:.42},$('hc-dots')));el('text',{x:324,y:y(r,30)+3.5,fill:r.c,'font-size':10},$('hc-dots')).textContent=r.name}
+const source=(p,s)=>'harnessing-chaos/'+(s===0?'initial.webp':p+'/'+String(s).padStart(3,'0')+'.webp');
+function load(p,s){let k=source(p,s);if(!cache.has(k)){const i=new Image();cache.set(k,new Promise((res,rej)=>{i.onload=()=>res(i);i.onerror=()=>{cache.delete(k);rej(Error(k))};i.src=k}))}return cache.get(k)}function preload(p){return Promise.all(Array.from({length:30},(_,i)=>load(p,i+1)))}
+function stop(){token++;clearTimeout(timer);timer=null;playing=false;play.textContent='▷';play.setAttribute('aria-label','Play selected path')}
+function render(p,s){const changed=path!==p||step!==s;path=p;step=s;const r=routes.find(a=>a.id===p),cx=x(s),cy=r?y(r,s):117;for(const a of routes){a.line.setAttribute('opacity',(!r||a===r)? .9 : .36);a.line.setAttribute('stroke-width',a===r?2.2:1.55);a.dots.forEach((d,i)=>d.setAttribute('opacity',(!r||a===r)?((i+1)%5===0?.85:.5):.20))}for(const id of ['hc-halo','hc-marker']){const n=$(id);n.setAttribute('cx',cx);n.setAttribute('cy',cy);n.setAttribute('fill',r?r.c:'currentColor')}buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.path===p)));if(changed)img.src=source(p,s);img.alt=s===0?'Shared starting noise':`Path ${r.name}, step ${s}`;$('hc-state').textContent=s===0?'A shared beginning.':s===30?'You chose this.':`Step ${s} of 30`;g.setAttribute('aria-valuenow',s);g.setAttribute('aria-valuetext',s===0?'Shared beginning':`Path ${r.name}, step ${s} of 30`)}
+function point(e){const a=g.createSVGPoint();a.x=e.clientX;a.y=e.clientY;return a.matrixTransform(g.getScreenCTM().inverse())}
+function scrub(e,force=false){const a=point(e),s=Math.max(0,Math.min(30,Math.round((a.x-22)*30/290)));if(!force&&(a.x<10||a.x>338||a.y<2||a.y>194))return;const nearest=routes.reduce((best,r)=>Math.abs(y(r,s)-a.y)<Math.abs(y(best,s)-a.y)?r:best,routes[0]);const r=drag||((s<5&&path)?routes.find(r=>r.id===path):nearest);if(!force&&!drag&&Math.abs(y(r,s)-a.y)>16)return;stop();if(path!==r.id)preload(r.id).catch(()=>{});render(r.id,s)}
+g.addEventListener('pointerdown',e=>{e.preventDefault();g.focus({preventScroll:true});scrub(e,false);drag=routes.find(r=>r.id===path)||null;if(drag)g.setPointerCapture(e.pointerId)});g.addEventListener('pointermove',e=>{if(drag||e.pointerType==='mouse')scrub(e,!!drag)});for(const ev of ['pointerup','pointercancel','lostpointercapture'])g.addEventListener(ev,()=>drag=null);
+g.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();stop();let i=Math.max(0,routes.findIndex(r=>r.id===path)),s=step;if(e.key==='ArrowUp')i=(i+2)%3;else if(e.key==='ArrowDown')i=(i+1)%3;else if(e.key==='ArrowLeft')s=Math.max(0,s-1);else if(e.key==='ArrowRight')s=Math.min(30,s+1);else if(e.key==='Home')s=0;else s=30;render(routes[i].id,s);preload(routes[i].id).catch(()=>{})});
+buttons.forEach(b=>b.onclick=()=>{stop();render(b.dataset.path,0);preload(path).catch(()=>{});g.focus({preventScroll:true})});$('hc-reset').onclick=()=>{stop();render(null,0)};
+play.onclick=async()=>{if(playing){stop();return}if(!path)render('A',0);if(step===30)render(path,0);const run=++token,p=path;playing=true;play.textContent='Ⅱ';play.setAttribute('aria-label','Pause trajectory');try{await preload(p);if(run!==token)return;const tick=()=>{if(run!==token)return;render(p,step+1);if(step<30)timer=setTimeout(tick,100);else stop()};timer=setTimeout(tick,100)}catch(e){if(run===token){stop();$('hc-state').textContent='Could not load frames.'}}};
+$('hc-blog-link').onclick=e=>{e.preventDefault();$('path-in-between').showModal()};$('hc-close-blog').onclick=()=>$('path-in-between').close();render(null,0);
+})();</script>
+<!-- chaos-curiosity:end -->
 
 
     <footer id="contact">
